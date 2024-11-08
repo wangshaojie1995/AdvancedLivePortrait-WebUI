@@ -13,6 +13,7 @@ You can try it in Colab
 # Installation And Running
 ### Prerequisite
 1. `3.9` <= `python` <= `3.12` : https://www.python.org/downloads/release/python-3110/
+2. **(Opitonal, only if you're using Nvidia GPU)** CUDA 12.4 : https://developer.nvidia.com/cuda-12-4-0-download-archive?target_os=Windows
 
 ## Run Locally
 1. git clone this repository
