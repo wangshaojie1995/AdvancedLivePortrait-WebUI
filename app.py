@@ -20,7 +20,7 @@ class App:
         )
 
     @staticmethod
-    def create_parameters():
+    def create_expression_parameters():
         return [
             gr.Dropdown(label=_("Model Type"), visible=False, interactive=False,
                         choices=[item.value for item in ModelType], value=ModelType.HUMAN.value),
@@ -44,6 +44,19 @@ class App:
             gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=1.7)
         ]
 
+    @staticmethod
+    def create_video_parameters():
+        return [
+            gr.Dropdown(label=_("Model Type"), visible=False, interactive=False,
+                        choices=[item.value for item in ModelType],
+                        value=ModelType.HUMAN.value),
+            gr.Slider(label=_("Retargeting Eyes"), minimum=0, maximum=1, step=0.01, value=0),
+            gr.Slider(label=_("Retargeting Mouth"), minimum=0, maximum=1, step=0.01, value=0),
+            gr.Checkbox(label=_("Tracking Source Video"), value=False, visible=False),
+            gr.Checkbox(label=_("Animate Without Video"), value=False, visible=False),
+            gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=1.7),
+        ]
+
     def launch(self):
         with self.app:
             with self.i18n:
@@ -60,7 +73,7 @@ class App:
                             with gr.Column(scale=9):
                                 img_out = gr.Image(label=_("Output Image"))
                             with gr.Column(scale=1):
-                                expression_parameters = self.create_parameters()
+                                expression_parameters = self.create_expression_parameters()
                                 btn_openfolder = gr.Button('📂')
                                 with gr.Accordion("Opt in features", visible=False):
                                     img_sample = gr.Image()
@@ -91,9 +104,9 @@ class App:
                         with gr.Row():
                             img_ref = gr.Image(label=_("Reference Image"))
                             vid_driven = gr.Video(label=_("Driven Video"))
-                            dd_model_type = gr.Dropdown(label=_("Model Type"), visible=False, interactive=False,
-                                                        choices=[item.value for item in ModelType],
-                                                        value=ModelType.HUMAN.value),
+                            with gr.Column():
+                                vid_params = self.create_video_parameters()
+
                         with gr.Row():
                             btn_gen = gr.Button(_("GENERATE"))
                         with gr.Row(equal_height=True):
@@ -102,9 +115,15 @@ class App:
                             with gr.Column(scale=1):
                                 btn_openfolder = gr.Button('📂')
 
+                        params = vid_params + [img_ref, vid_driven]
+
                         btn_gen.click(
                             fn=self.inferencer.create_video,
-
+                            inputs=params,
+                            outputs=vid_out
+                        )
+                        btn_openfolder.click(
+                            fn=lambda: self.open_folder(self.args.output_dir), inputs=None, outputs=None
                         )
 
             gradio_launch_args = {
