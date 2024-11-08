@@ -122,7 +122,8 @@ class App:
                             outputs=vid_out
                         )
                         btn_openfolder.click(
-                            fn=lambda: self.open_folder(self.args.output_dir), inputs=None, outputs=None
+                            fn=lambda: self.open_folder(os.path.join(self.args.output_dir, "videos")),
+                            inputs=None, outputs=None
                         )
 
             gradio_launch_args = {
