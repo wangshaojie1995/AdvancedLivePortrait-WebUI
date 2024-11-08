@@ -48,6 +48,7 @@ def extract_frames(
 
     try:
         subprocess.run(command, check=True)
+        print(f"Video frames extracted to \"{os.path.normpath(output_temp_dir)}\"")
     except subprocess.CalledProcessError as e:
         print("Error occurred while extracting frames from the video")
         raise RuntimeError(f"An error occurred: {str(e)}")
@@ -227,7 +228,6 @@ def create_video_from_frames(
         ]
     try:
         subprocess.run(command, check=True)
-        print(f"Video frames extracted to \"{os.path.normpath(frames_dir)}\"")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while creating video from frames")
         raise
