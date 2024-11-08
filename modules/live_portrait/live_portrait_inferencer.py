@@ -243,14 +243,13 @@ class LivePortraitInferencer:
 
     def create_video(self,
                      model_type: str = ModelType.HUMAN.value,
-                     retargeting_eyes: bool = True,
-                     retargeting_mouth: bool = True,
-                     tracking_src_vid: bool = True,
+                     retargeting_eyes: float = 0,
+                     retargeting_mouth: float = 0,
+                     tracking_src_vid: bool = False,
                      animate_without_vid: bool = False,
                      crop_factor: float = 1.5,
-                     src_image_list: Optional[List[np.ndarray]] = None,
+                     src_image: Optional[str] = None,
                      driving_vid_path: Optional[str] = None,
-                     driving_images: Optional[List[np.ndarray]] = None,
                      progress: gr.Progress = gr.Progress()
                      ):
         if self.pipeline is None or model_type != self.model_type:
@@ -260,16 +259,17 @@ class LivePortraitInferencer:
 
         src_length = 1
 
-        if src_image_list is not None:
-            src_length = len(src_image_list)
-            if id(src_image_list) != id(self.src_image_list) or self.crop_factor != crop_factor:
+        if src_image is not None:
+            src_length = len(src_image)
+            if id(src_image) != id(self.src_image) or self.crop_factor != crop_factor:
                 self.crop_factor = crop_factor
-                self.src_image_list = src_image_list
-                if 1 < src_length:
-                    self.psi_list = [self.prepare_source(src, crop_factor, True, tracking_src_vid) for src in src_image_list]
-                else:
-                    self.psi_list = [self.prepare_source(src, crop_factor) for src in src_image_list]
 
+                if 1 < src_length:
+                    self.psi_list = self.prepare_source(src_image, crop_factor, True, tracking_src_vid)
+                else:
+                    self.psi_list = self.prepare_source(src_image, crop_factor)
+
+        driving_images, vid_sound = extract_frames(driving_vid_path), extract_sound(driving_vid_path)
         driving_length = 0
         if driving_images is not None:
             if id(driving_images) != id(self.driving_images):
@@ -281,6 +281,7 @@ class LivePortraitInferencer:
 
         if animate_without_vid:
             total_length = total_length
+        self.psi_list = [self.psi_list[0] for _ in range(total_length)]
 
         c_i_es = ExpressionSet()
         c_o_es = ExpressionSet()
@@ -292,6 +293,7 @@ class LivePortraitInferencer:
 
             if i < src_length:
                 psi = self.psi_list[i]
+
                 s_info = psi.x_s_info
                 s_es = ExpressionSet(erst=(s_info['kp'] + s_info['exp'], torch.Tensor([0, 0, 0]), s_info['scale'], s_info['t']))
 
@@ -299,7 +301,7 @@ class LivePortraitInferencer:
 
             if i < driving_length:
                 d_i_info = self.driving_values[i]
-                d_i_r = torch.Tensor([d_i_info['pitch'], d_i_info['yaw'], d_i_info['roll']])#.float().to(device="cuda:0")
+                d_i_r = torch.Tensor([d_i_info['pitch'], d_i_info['yaw'], d_i_info['roll']]) #.float().to(device="cuda:0")
 
                 if d_0_es is None:
                     d_0_es = ExpressionSet(erst = (d_i_info['exp'], d_i_r, d_i_info['scale'], d_i_info['t']))
@@ -532,8 +534,15 @@ class LivePortraitInferencer:
         return new_img
 
     def prepare_src_image(self, img):
-        h, w = img.shape[:2]
-        input_shape = [256,256]
+        if isinstance(img, str):
+            img = image_path_to_array(img)
+
+        if len(img.shape) <= 3:
+            img = img[np.newaxis, ...]
+
+        d, h, w, c = img.shape
+        img = img[0] # Select first dimension
+        input_shape = [256, 256]
         if h != input_shape[0] or w != input_shape[1]:
             if 256 < h: interpolation = cv2.INTER_AREA
             else: interpolation = cv2.INTER_LINEAR
@@ -604,11 +613,9 @@ class LivePortraitInferencer:
         return psi_list
 
     def prepare_driving_video(self, face_images):
-        print("Prepare driving video...")
-        f_img_np = (face_images * 255).byte().numpy()
-
+        # print("Prepare driving video...")
         out_list = []
-        for f_img in f_img_np:
+        for f_img in face_images:
             i_d = self.prepare_src_image(f_img)
             d_info = self.pipeline.get_kp_info(i_d)
             out_list.append(d_info)
