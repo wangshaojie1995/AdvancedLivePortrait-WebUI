@@ -37,6 +37,7 @@ def extract_frames(
 
     command = [
         'ffmpeg',
+        '-loglevel', 'error',
         '-y',  # Enable overwriting
         '-i', vid_input,
         '-qscale:v', '2',
@@ -70,6 +71,7 @@ def extract_sound(
 
     command = [
         'ffmpeg',
+        '-loglevel', 'error',
         '-y',  # Enable overwriting
         '-i', vid_input,
         '-vn',
@@ -90,6 +92,7 @@ def get_video_info(vid_input: str) -> VideoInfo:
     """
     command = [
         'ffmpeg',
+        '-loglevel', 'error',
         '-i', vid_input,
         '-map', '0:v:0',
         '-c', 'copy',
@@ -194,6 +197,7 @@ def create_video_from_frames(
 
     command = [
         'ffmpeg',
+        '-loglevel', 'error',
         '-y',
         '-framerate', str(frame_rate),
         '-i', os.path.join(frames_dir, f"%05d{frame_img_mime_type}"),
