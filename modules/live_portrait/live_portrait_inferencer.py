@@ -4,6 +4,7 @@ import cv2
 import time
 import copy
 import dill
+import torch
 from ultralytics import YOLO
 import safetensors.torch
 import gradio as gr
@@ -218,9 +219,9 @@ class LivePortraitInferencer:
                     rotate_yaw += self.d_info['yaw'] * sample_ratio
                     rotate_roll += self.d_info['roll'] * sample_ratio
                 elif sample_parts == SamplePart.ONLY_MOUTH.value:
-                    self.retargeting(es.e, self.d_info['exp'], sample_ratio, (14, 17, 19, 20))
+                    es.e = self.retargeting(es.e, self.d_info['exp'], sample_ratio, (14, 17, 19, 20))
                 elif sample_parts == SamplePart.ONLY_EYES.value:
-                    self.retargeting(es.e, self.d_info['exp'], sample_ratio, (1, 2, 11, 13, 15, 16))
+                    es.e = self.retargeting(es.e, self.d_info['exp'], sample_ratio, (1, 2, 11, 13, 15, 16))
 
             es.r = self.calc_fe(es.e, blink, eyebrow, wink, pupil_x, pupil_y, aaa, eee, woo, smile,
                                 rotate_pitch, rotate_yaw, rotate_roll)
@@ -312,8 +313,8 @@ class LivePortraitInferencer:
                 if d_0_es is None:
                     d_0_es = ExpressionSet(erst = (d_i_info['exp'], d_i_r, d_i_info['scale'], d_i_info['t']))
 
-                    self.retargeting(s_es.e, d_0_es.e, retargeting_eyes, (11, 13, 15, 16))
-                    self.retargeting(s_es.e, d_0_es.e, retargeting_mouth, (14, 17, 19, 20))
+                    s_es.e = self.retargeting(s_es.e, d_0_es.e, retargeting_eyes, (11, 13, 15, 16))
+                    s_es.e = self.retargeting(s_es.e, d_0_es.e, retargeting_mouth, (14, 17, 19, 20))
 
                 new_es.e += d_i_info['exp'] - d_0_es.e
                 new_es.r += d_i_r - d_0_es.r
@@ -508,9 +509,10 @@ class LivePortraitInferencer:
 
     @staticmethod
     def retargeting(delta_out, driving_exp, factor, idxes):
+        delta_out = delta_out.clone()
         for idx in idxes:
-            # delta_out[0, idx] -= src_exp[0, idx] * factor
             delta_out[0, idx] += driving_exp[0, idx] * factor
+        return delta_out
 
     @staticmethod
     def calc_face_region(square, dsize):
