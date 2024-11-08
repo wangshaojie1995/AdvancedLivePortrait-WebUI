@@ -277,10 +277,10 @@ class LivePortraitInferencer:
                 self.driving_values = self.prepare_driving_video(driving_images)
             driving_length = len(self.driving_values)
 
-        total_length = max(driving_length, src_length)
-
+        total_length = len(driving_images)
         if animate_without_vid:
             total_length = total_length
+
         self.psi_list = [self.psi_list[0] for _ in range(total_length)]
 
         c_i_es = ExpressionSet()
