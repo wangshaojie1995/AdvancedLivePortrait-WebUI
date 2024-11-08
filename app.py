@@ -102,7 +102,7 @@ class App:
                     with gr.TabItem(_("Video Driven")):
                         with gr.Row():
                             img_ref = gr.Image(label=_("Reference Image"))
-                            vid_driven = gr.Video(label=_("Driven Video"))
+                            vid_driven = gr.Video(label=_("Expression Video"))
                             with gr.Column():
                                 vid_params = self.create_video_parameters()
 
