@@ -227,7 +227,7 @@ def create_video_from_frames(
         ]
     try:
         subprocess.run(command, check=True)
-        print(f"Video frames extracted to {frames_dir}")
+        print(f"Video frames extracted to \"{os.path.normpath(frames_dir)}\"")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while creating video from frames")
         raise
