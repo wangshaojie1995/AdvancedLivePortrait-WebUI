@@ -198,6 +198,7 @@ def create_video_from_frames(
         '-framerate', str(frame_rate),
         '-i', os.path.join(frames_dir, f"%05d{frame_img_mime_type}"),
         '-c:v', vid_codec,
+        '-vf', 'scale=iw:-2' if pix_format else None,
     ]
 
     if output_mime_type == ".gif":
