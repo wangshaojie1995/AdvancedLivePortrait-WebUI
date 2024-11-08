@@ -92,7 +92,6 @@ def get_video_info(vid_input: str) -> VideoInfo:
     """
     command = [
         'ffmpeg',
-        '-loglevel', 'error',
         '-i', vid_input,
         '-map', '0:v:0',
         '-c', 'copy',
@@ -133,6 +132,7 @@ def get_video_info(vid_input: str) -> VideoInfo:
         if frame_rate and duration:
             num_frames = int(frame_rate * duration)
 
+        print(f"Video info - frame_rate: {frame_rate}, duration: {duration}, total frames: {num_frames}")
         return VideoInfo(
             num_frames=num_frames,
             frame_rate=frame_rate,
@@ -227,8 +227,10 @@ def create_video_from_frames(
         ]
     try:
         subprocess.run(command, check=True)
+        print(f"Video frames extracted to {frames_dir}")
     except subprocess.CalledProcessError as e:
-        print("Error occurred while creating video from frames")
+        print(f"Error occurred while creating video from frames")
+        raise
     return output_path
 
 
