@@ -268,20 +268,16 @@ class LivePortraitInferencer:
 
         vid_info = get_video_info(vid_input=driving_vid_path)
 
-        src_length = 1
-
         if src_image is not None:
-            src_length = len(src_image)
             if id(src_image) != id(self.src_image) or self.crop_factor != crop_factor:
                 self.crop_factor = crop_factor
+                self.src_image = src_image
 
-                if 1 < src_length:
-                    self.psi_list = self.prepare_source(src_image, crop_factor, True, tracking_src_vid)
-                else:
-                    self.psi_list = self.prepare_source(src_image, crop_factor)
+                self.psi_list = [self.prepare_source(src_image, crop_factor)]
 
         progress(0, desc="Extracting frames from the video..")
         driving_images, vid_sound = extract_frames(driving_vid_path, os.path.join(self.output_dir, "temp", "video_frames")), extract_sound(driving_vid_path)
+
         driving_length = 0
         if driving_images is not None:
             if id(driving_images) != id(self.driving_images):
@@ -290,7 +286,6 @@ class LivePortraitInferencer:
             driving_length = len(self.driving_values)
 
         total_length = len(driving_images)
-        self.psi_list = [self.psi_list[0] for _ in range(total_length)]
 
         c_i_es = ExpressionSet()
         c_o_es = ExpressionSet()
@@ -299,9 +294,8 @@ class LivePortraitInferencer:
         psi = None
         for i in range(total_length):
 
-            if i < src_length:
+            if i == 0:
                 psi = self.psi_list[i]
-
                 s_info = psi.x_s_info
                 s_es = ExpressionSet(erst=(s_info['kp'] + s_info['exp'], torch.Tensor([0, 0, 0]), s_info['scale'], s_info['t']))
 
@@ -309,7 +303,7 @@ class LivePortraitInferencer:
 
             if i < driving_length:
                 d_i_info = self.driving_values[i]
-                d_i_r = torch.Tensor([d_i_info['pitch'], d_i_info['yaw'], d_i_info['roll']]) #.float().to(device="cuda:0")
+                d_i_r = torch.Tensor([d_i_info['pitch'], d_i_info['yaw'], d_i_info['roll']]) # .float().to(device="cuda:0")
 
                 if d_0_es is None:
                     d_0_es = ExpressionSet(erst = (d_i_info['exp'], d_i_r, d_i_info['scale'], d_i_info['t']))
