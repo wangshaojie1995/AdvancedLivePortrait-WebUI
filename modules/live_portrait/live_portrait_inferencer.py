@@ -246,7 +246,6 @@ class LivePortraitInferencer:
                      retargeting_eyes: float = 0,
                      retargeting_mouth: float = 0,
                      tracking_src_vid: bool = False,
-                     animate_without_vid: bool = False,
                      crop_factor: float = 1.5,
                      src_image: Optional[str] = None,
                      driving_vid_path: Optional[str] = None,
@@ -278,9 +277,6 @@ class LivePortraitInferencer:
             driving_length = len(self.driving_values)
 
         total_length = len(driving_images)
-        if animate_without_vid:
-            total_length = total_length
-
         self.psi_list = [self.psi_list[0] for _ in range(total_length)]
 
         c_i_es = ExpressionSet()

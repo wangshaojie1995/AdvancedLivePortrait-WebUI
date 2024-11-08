@@ -53,7 +53,6 @@ class App:
             gr.Slider(label=_("Retargeting Eyes"), minimum=0, maximum=1, step=0.01, value=0),
             gr.Slider(label=_("Retargeting Mouth"), minimum=0, maximum=1, step=0.01, value=0),
             gr.Checkbox(label=_("Tracking Source Video"), value=False, visible=False),
-            gr.Checkbox(label=_("Animate Without Video"), value=False, visible=False),
             gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=1.7),
         ]
 
