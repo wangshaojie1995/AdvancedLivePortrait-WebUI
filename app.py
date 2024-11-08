@@ -107,7 +107,7 @@ class App:
                                 vid_params = self.create_video_parameters()
 
                         with gr.Row():
-                            btn_gen = gr.Button(_("GENERATE"))
+                            btn_gen = gr.Button(_("GENERATE"), variant="primary")
                         with gr.Row(equal_height=True):
                             with gr.Column(scale=9):
                                 vid_out = gr.Video(label=_("Output Video"), scale=9)
