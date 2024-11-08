@@ -33,8 +33,17 @@ class LivePortraitInferencer:
                  model_dir: str = MODELS_DIR,
                  output_dir: str = OUTPUTS_DIR):
         self.model_dir = model_dir
-        os.makedirs(os.path.join(self.model_dir, "animal"), exist_ok=True)
         self.output_dir = output_dir
+        relative_dirs = [
+            os.path.join(self.model_dir, "animal"),
+            os.path.join(self.output_dir, "videos"),
+            os.path.join(self.output_dir, "temp"),
+            os.path.join(self.output_dir, "temp", "video_frames"),
+            os.path.join(self.output_dir, "temp", "video_frames", "out"),
+        ]
+        for dir_path in relative_dirs:
+            os.makedirs(dir_path, exist_ok=True)
+
         self.model_config = load_yaml(MODEL_CONFIG)["model_params"]
 
         self.appearance_feature_extractor = None
@@ -256,6 +265,8 @@ class LivePortraitInferencer:
                 model_type=model_type
             )
 
+        vid_info = get_video_info(vid_input=driving_vid_path)
+
         src_length = 1
 
         if src_image is not None:
@@ -268,7 +279,7 @@ class LivePortraitInferencer:
                 else:
                     self.psi_list = self.prepare_source(src_image, crop_factor)
 
-        driving_images, vid_sound = extract_frames(driving_vid_path), extract_sound(driving_vid_path)
+        driving_images, vid_sound = extract_frames(driving_vid_path, os.path.join(self.output_dir, "temp", "video_frames")), extract_sound(driving_vid_path)
         driving_length = 0
         if driving_images is not None:
             if id(driving_images) != id(self.driving_images):
@@ -320,12 +331,12 @@ class LivePortraitInferencer:
             out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(
                 np.uint8)
 
-            out_frame_path = get_auto_incremental_file_path(TEMP_VIDEO_OUT_FRAMES_DIR, "png")
+            out_frame_path = get_auto_incremental_file_path(os.path.join(self.output_dir, "temp", "video_frames", "out"), "png")
             save_image(out, out_frame_path)
 
             progress(i/total_length, desc=f"Generating frames {i}/{total_length} ..")
 
-        video_path = create_video_from_frames(TEMP_VIDEO_OUT_FRAMES_DIR)
+        video_path = create_video_from_frames(TEMP_VIDEO_OUT_FRAMES_DIR, frame_rate=vid_info.frame_rate, output_dir=os.path.join(self.output_dir, "videos"))
 
         return video_path
 
