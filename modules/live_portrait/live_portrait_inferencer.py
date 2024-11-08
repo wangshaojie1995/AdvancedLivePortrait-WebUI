@@ -280,6 +280,7 @@ class LivePortraitInferencer:
                 else:
                     self.psi_list = self.prepare_source(src_image, crop_factor)
 
+        progress(0, desc="Extracting frames from the video..")
         driving_images, vid_sound = extract_frames(driving_vid_path, os.path.join(self.output_dir, "temp", "video_frames")), extract_sound(driving_vid_path)
         driving_length = 0
         if driving_images is not None:
