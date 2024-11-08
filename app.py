@@ -62,7 +62,7 @@ class App:
                 gr.Markdown(REPO_MARKDOWN, elem_id="md_project")
 
                 with gr.Tabs():
-                    with gr.TabItem(_("Expression Editing")):
+                    with gr.TabItem(_("Expression Editor")):
                         with gr.Row():
                             with gr.Column():
                                 img_ref = gr.Image(label=_("Reference Image"))
