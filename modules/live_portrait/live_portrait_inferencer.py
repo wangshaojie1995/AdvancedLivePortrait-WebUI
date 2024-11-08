@@ -326,7 +326,7 @@ class LivePortraitInferencer:
                 np.uint8)
             out_list.append(out)
 
-            progress(i/total_length, "predicting..")
+            progress(i/total_length, desc="Generating frames..")
 
         if len(out_list) == 0:
             return None
