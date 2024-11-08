@@ -1,6 +1,7 @@
 import subprocess
 import os
 from typing import List, Optional, Union
+import cv2
 from PIL import Image
 import numpy as np
 from dataclasses import dataclass
@@ -8,7 +9,8 @@ import re
 from pathlib import Path
 
 from modules.utils.constants import SOUND_FILE_EXT, VIDEO_FILE_EXT, IMAGE_FILE_EXT
-from modules.utils.paths import TEMP_VIDEO_FRAMES_DIR, TEMP_VIDEO_OUT_FRAMES_DIR, OUTPUTS_VIDEOS_DIR
+from modules.utils.paths import (TEMP_VIDEO_FRAMES_DIR, TEMP_VIDEO_OUT_FRAMES_DIR, OUTPUTS_VIDEOS_DIR,
+                                 get_auto_incremental_file_path)
 
 
 @dataclass
@@ -232,6 +234,35 @@ def create_video_from_frames(
         print(f"Error occurred while creating video from frames")
         raise
     return output_path
+
+
+def create_video_from_numpy_list(frame_list: List[np.ndarray],
+                                 frame_rate: Optional[int] = None,
+                                 sound_path: Optional[str] = None,
+                                 output_dir: Optional[str] = None
+                                 ):
+    if output_dir is None:
+        output_dir = OUTPUTS_VIDEOS_DIR
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = get_auto_incremental_file_path(output_dir, "mp4")
+
+    if frame_rate is None:
+        frame_rate = 25
+
+    if sound_path is None:
+        temp_sound = os.path.join(TEMP_VIDEO_FRAMES_DIR, "sound.mp3")
+        if os.path.exists(temp_sound):
+            sound_path = temp_sound
+
+    height, width, layers = frame_list[0].shape
+    fourcc = cv2.VideoWriter.fourcc(*'mp4v')
+
+    out = cv2.VideoWriter(output_path, fourcc, frame_rate, (width, height))
+
+    for frame in frame_list:
+        out.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+
+    out.release()
 
 
 def get_frames_from_dir(vid_dir: str,
