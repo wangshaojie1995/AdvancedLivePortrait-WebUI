@@ -286,7 +286,6 @@ class LivePortraitInferencer:
         c_i_es = ExpressionSet()
         c_o_es = ExpressionSet()
         d_0_es = None
-        out_list = []
 
         psi = None
         for i in range(total_length):
@@ -324,18 +323,11 @@ class LivePortraitInferencer:
                                                 cv2.INTER_LINEAR)
             out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(
                 np.uint8)
-            out_list.append(out)
 
-            progress(i/total_length, desc="Generating frames..")
-
-        if len(out_list) == 0:
-            return None
-
-        out_imgs = torch.cat([pil2tensor(img_rgb) for img_rgb in out_list])
-        out_imgs = [tensor.permute(1, 2, 0).cpu().numpy() for tensor in out_imgs]
-        for img in out_imgs:
             out_frame_path = get_auto_incremental_file_path(TEMP_VIDEO_OUT_FRAMES_DIR, "png")
-            save_image(img, out_frame_path)
+            save_image(out, out_frame_path)
+
+            progress(i/total_length, desc=f"Generating frames {i}/{total_length} ..")
 
         video_path = create_video_from_frames(TEMP_VIDEO_OUT_FRAMES_DIR)
 
