@@ -24,6 +24,11 @@ en: # English
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 ko: # Korean
   Language: 언어
@@ -51,6 +56,11 @@ ko: # Korean
   OnlyEyes: 눈만
   All: 전부
   Value above 5 may appear distorted: 5 이상은 왜곡돼 보일 수 있습니다.
+  Expression Editor: 표정 편집기
+  Video Driven: 영상 변환
+  Expression Video: 표정 영상
+  GENERATE: 생성
+  Output Video: 결과 영상
 
 ja: # Japanese
   Language: 言語
@@ -78,6 +88,11 @@ ja: # Japanese
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 es: # Spanish
   Language: Idioma
@@ -105,6 +120,11 @@ es: # Spanish
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 fr: # French
   Language: Langue
@@ -132,6 +152,11 @@ fr: # French
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 de: # German
   Language: Sprache
@@ -159,6 +184,11 @@ de: # German
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 zh: # Chinese
   Language: 语言
@@ -186,6 +216,11 @@ zh: # Chinese
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 uk: # Ukrainian
   Language: Мова
@@ -213,6 +248,11 @@ uk: # Ukrainian
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 ru: # Russian
   Language: Язык
@@ -240,6 +280,11 @@ ru: # Russian
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
 
 tr: # Turkish
   Language: Dil
@@ -267,3 +312,8 @@ tr: # Turkish
   OnlyEyes: OnlyEyes
   All: All
   Value above 5 may appear distorted: Value above 5 may appear distorted
+  Expression Editor: Expression Editor
+  Video Driven: Video Driven
+  Expression Video: Expression Video
+  GENERATE: GENERATE
+  Output Video: Output Video
