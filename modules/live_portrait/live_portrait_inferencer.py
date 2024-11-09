@@ -162,9 +162,7 @@ class LivePortraitInferencer:
                         sample_parts: str = SamplePart.ALL.value,
                         crop_factor: float = 2.3,
                         src_image: Optional[str] = None,
-                        sample_image: Optional[str] = None,
-                        motion_link: Optional[str] = None,
-                        add_exp: Optional['ExpressionSet'] = None) -> None:
+                        sample_image: Optional[str] = None,) -> None:
         if isinstance(model_type, ModelType):
             model_type = model_type.value
         if model_type not in [mode.value for mode in ModelType]:
@@ -178,17 +176,11 @@ class LivePortraitInferencer:
         try:
             rotate_yaw = -rotate_yaw
 
-            new_editor_link = None
-            if isinstance(motion_link, np.ndarray) and motion_link:
-                self.psi = motion_link[0]
-                new_editor_link = motion_link.copy()
-            elif src_image is not None:
+            if src_image is not None:
                 if id(src_image) != id(self.src_image) or self.crop_factor != crop_factor:
                     self.crop_factor = crop_factor
                     self.psi = self.prepare_source(src_image, crop_factor)
                     self.src_image = src_image
-                new_editor_link = []
-                new_editor_link.append(self.psi)
             else:
                 return None
 
@@ -226,9 +218,6 @@ class LivePortraitInferencer:
             es.r = self.calc_fe(es.e, blink, eyebrow, wink, pupil_x, pupil_y, aaa, eee, woo, smile,
                                 rotate_pitch, rotate_yaw, rotate_roll)
 
-            if isinstance(add_exp, ExpressionSet):
-                es.add(add_exp)
-
             new_rotate = get_rotation_matrix(s_info['pitch'] + es.r[0], s_info['yaw'] + es.r[1],
                                              s_info['roll'] + es.r[2])
             x_d_new = (s_info['scale'] * (1 + es.s)) * ((s_exp + es.e) @ new_rotate) + s_info['t']
@@ -244,8 +233,6 @@ class LivePortraitInferencer:
             temp_out_img_path, out_img_path = get_auto_incremental_file_path(TEMP_DIR, "png"), get_auto_incremental_file_path(OUTPUTS_DIR, "png")
             save_image(numpy_array=crop_out, output_path=temp_out_img_path)
             save_image(numpy_array=out, output_path=out_img_path)
-
-            new_editor_link.append(es)
 
             return out
         except Exception as e:

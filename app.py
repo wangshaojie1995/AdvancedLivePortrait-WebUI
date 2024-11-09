@@ -75,11 +75,9 @@ class App:
                                 btn_openfolder = gr.Button('📂')
                                 with gr.Accordion("Opt in features", visible=False):
                                     img_sample = gr.Image()
-                                    img_motion_link = gr.Image()
-                                    tb_exp = gr.Textbox()
 
                         params = expression_parameters + [img_ref]
-                        opt_in_features_params = [img_sample, img_motion_link, tb_exp]
+                        opt_in_features_params = [img_sample]
 
                         gr.on(
                             triggers=[param.change for param in params],
