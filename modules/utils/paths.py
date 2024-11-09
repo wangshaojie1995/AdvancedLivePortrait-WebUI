@@ -42,6 +42,7 @@ def get_auto_incremental_file_path(dir_path: str, extension: str, prefix: str = 
             filename = f"{counter:05d}.{extension}"
         full_path = os.path.join(dir_path, filename)
         if not os.path.exists(full_path):
+            full_path = os.path.normpath(full_path)
             return full_path
         counter += 1
 

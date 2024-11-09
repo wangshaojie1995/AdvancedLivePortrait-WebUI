@@ -161,6 +161,7 @@ def create_video_from_frames(
     """
     if not os.path.exists(frames_dir):
         raise "frames_dir does not exist"
+    frames_dir = os.path.normpath(frames_dir)
 
     if output_dir is None:
         output_dir = OUTPUTS_VIDEOS_DIR
@@ -186,12 +187,10 @@ def create_video_from_frames(
         pix_format = None
         vid_codec, audio_codec = "gif", None
 
-    num_files = len(os.listdir(output_dir))
-    filename = f"{num_files:05d}{output_mime_type}"
-    output_path = os.path.join(output_dir, filename)
+    output_path = get_auto_incremental_file_path(output_dir, output_mime_type.replace(".", ""))
 
     if sound_path is None:
-        temp_sound = os.path.join(TEMP_VIDEO_FRAMES_DIR, "sound.mp3")
+        temp_sound = os.path.normpath(os.path.join(TEMP_VIDEO_FRAMES_DIR, "sound.mp3"))
         if os.path.exists(temp_sound):
             sound_path = temp_sound
 
