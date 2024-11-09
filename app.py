@@ -50,8 +50,8 @@ class App:
             gr.Dropdown(label=_("Model Type"), visible=False, interactive=False,
                         choices=[item.value for item in ModelType],
                         value=ModelType.HUMAN.value),
-            gr.Slider(label=_("First frame eyes alignment factor"), minimum=1, maximum=1, step=0.01, value=0),
-            gr.Slider(label=_("First frame mouth alignment factor"), minimum=1, maximum=1, step=0.01, value=0),
+            gr.Slider(label=_("First frame eyes alignment factor"), minimum=1, maximum=0, step=0.01, value=1),
+            gr.Slider(label=_("First frame mouth alignment factor"), minimum=1, maximum=0, step=0.01, value=1),
             gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=2.0),
         ]
 
