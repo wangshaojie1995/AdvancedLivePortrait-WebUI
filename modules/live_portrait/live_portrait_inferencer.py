@@ -255,7 +255,6 @@ class LivePortraitInferencer:
                      model_type: str = ModelType.HUMAN.value,
                      retargeting_eyes: float = 0,
                      retargeting_mouth: float = 0,
-                     tracking_src_vid: bool = False,
                      crop_factor: float = 1.5,
                      src_image: Optional[str] = None,
                      driving_vid_path: Optional[str] = None,
