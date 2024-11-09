@@ -35,5 +35,5 @@ def test_video_creation(
     )
 
     assert os.path.exists(output_video_path)
-    assert are_videos_different(input_image, TEST_EXPRESSION_OUTPUT_PATH)
+    assert validate_video(output_video_path)
     assert has_sound(output_video_path)
