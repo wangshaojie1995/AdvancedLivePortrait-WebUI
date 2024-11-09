@@ -6,6 +6,7 @@ import functools
 import numpy as np
 import cv2
 from skimage.metrics import structural_similarity as compare_ssim
+from moviepy.editor import VideoFileClip
 
 from modules.utils.paths import *
 
@@ -68,6 +69,14 @@ def are_videos_different(video1_path: str, video2_path: str):
     cap1.release()
     cap2.release()
     return False
+
+
+def has_sound(video_path: str):
+    try:
+        video = VideoFileClip(video_path)
+        return video.audio is not None
+    except Exception as e:
+        return False
 
 
 @functools.lru_cache
