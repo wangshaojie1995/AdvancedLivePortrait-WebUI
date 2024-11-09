@@ -41,7 +41,7 @@ class App:
             gr.Slider(label=_("Sample Ratio"), minimum=-0.2, maximum=1.2, step=0.01, value=1, visible=False),
             gr.Dropdown(label=_("Sample Parts"), visible=False,
                         choices=[part.value for part in SamplePart], value=SamplePart.ALL.value),
-            gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=1.7)
+            gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=2.0)
         ]
 
     @staticmethod
@@ -52,7 +52,7 @@ class App:
                         value=ModelType.HUMAN.value),
             gr.Slider(label=_("First frame eyes alignment factor"), minimum=1, maximum=1, step=0.01, value=0),
             gr.Slider(label=_("First frame mouth alignment factor"), minimum=1, maximum=1, step=0.01, value=0),
-            gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=1.7),
+            gr.Slider(label=_("Crop Factor"), minimum=1.5, maximum=2.5, step=0.1, value=2.0),
         ]
 
     def launch(self):
