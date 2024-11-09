@@ -174,67 +174,68 @@ class LivePortraitInferencer:
             )
 
         try:
-            rotate_yaw = -rotate_yaw
+            with torch.autocast(device_type=self.device, enabled=(self.device == "cuda")):
+                rotate_yaw = -rotate_yaw
 
-            if src_image is not None:
-                if id(src_image) != id(self.src_image) or self.crop_factor != crop_factor:
-                    self.crop_factor = crop_factor
-                    self.psi = self.prepare_source(src_image, crop_factor)
-                    self.src_image = src_image
-            else:
-                return None
+                if src_image is not None:
+                    if id(src_image) != id(self.src_image) or self.crop_factor != crop_factor:
+                        self.crop_factor = crop_factor
+                        self.psi = self.prepare_source(src_image, crop_factor)
+                        self.src_image = src_image
+                else:
+                    return None
 
-            psi = self.psi
-            s_info = psi.x_s_info
-            #delta_new = copy.deepcopy()
-            s_exp = s_info['exp'] * src_ratio
-            s_exp[0, 5] = s_info['exp'][0, 5]
-            s_exp += s_info['kp']
+                psi = self.psi
+                s_info = psi.x_s_info
+                #delta_new = copy.deepcopy()
+                s_exp = s_info['exp'] * src_ratio
+                s_exp[0, 5] = s_info['exp'][0, 5]
+                s_exp += s_info['kp']
 
-            es = ExpressionSet()
+                es = ExpressionSet()
 
-            if isinstance(sample_image, np.ndarray) and sample_image:
-                if id(self.sample_image) != id(sample_image):
-                    self.sample_image = sample_image
-                    d_image_np = (sample_image * 255).byte().numpy()
-                    d_face = self.crop_face(d_image_np[0], 1.7)
-                    i_d = self.prepare_src_image(d_face)
-                    self.d_info = self.pipeline.get_kp_info(i_d)
-                    self.d_info['exp'][0, 5, 0] = 0
-                    self.d_info['exp'][0, 5, 1] = 0
+                if isinstance(sample_image, np.ndarray) and sample_image:
+                    if id(self.sample_image) != id(sample_image):
+                        self.sample_image = sample_image
+                        d_image_np = (sample_image * 255).byte().numpy()
+                        d_face = self.crop_face(d_image_np[0], 1.7)
+                        i_d = self.prepare_src_image(d_face)
+                        self.d_info = self.pipeline.get_kp_info(i_d)
+                        self.d_info['exp'][0, 5, 0] = 0
+                        self.d_info['exp'][0, 5, 1] = 0
 
-                # "OnlyExpression", "OnlyRotation", "OnlyMouth", "OnlyEyes", "All"
-                if sample_parts == SamplePart.ONLY_EXPRESSION.value or sample_parts == SamplePart.ONLY_EXPRESSION.ALL.value:
-                    es.e += self.d_info['exp'] * sample_ratio
-                if sample_parts == SamplePart.ONLY_ROTATION.value or sample_parts == SamplePart.ONLY_ROTATION.ALL.value:
-                    rotate_pitch += self.d_info['pitch'] * sample_ratio
-                    rotate_yaw += self.d_info['yaw'] * sample_ratio
-                    rotate_roll += self.d_info['roll'] * sample_ratio
-                elif sample_parts == SamplePart.ONLY_MOUTH.value:
-                    self.retargeting(es.e, self.d_info['exp'], sample_ratio, (14, 17, 19, 20))
-                elif sample_parts == SamplePart.ONLY_EYES.value:
-                    self.retargeting(es.e, self.d_info['exp'], sample_ratio, (1, 2, 11, 13, 15, 16))
+                    # "OnlyExpression", "OnlyRotation", "OnlyMouth", "OnlyEyes", "All"
+                    if sample_parts == SamplePart.ONLY_EXPRESSION.value or sample_parts == SamplePart.ONLY_EXPRESSION.ALL.value:
+                        es.e += self.d_info['exp'] * sample_ratio
+                    if sample_parts == SamplePart.ONLY_ROTATION.value or sample_parts == SamplePart.ONLY_ROTATION.ALL.value:
+                        rotate_pitch += self.d_info['pitch'] * sample_ratio
+                        rotate_yaw += self.d_info['yaw'] * sample_ratio
+                        rotate_roll += self.d_info['roll'] * sample_ratio
+                    elif sample_parts == SamplePart.ONLY_MOUTH.value:
+                        self.retargeting(es.e, self.d_info['exp'], sample_ratio, (14, 17, 19, 20))
+                    elif sample_parts == SamplePart.ONLY_EYES.value:
+                        self.retargeting(es.e, self.d_info['exp'], sample_ratio, (1, 2, 11, 13, 15, 16))
 
-            es.r = self.calc_fe(es.e, blink, eyebrow, wink, pupil_x, pupil_y, aaa, eee, woo, smile,
-                                rotate_pitch, rotate_yaw, rotate_roll)
+                es.r = self.calc_fe(es.e, blink, eyebrow, wink, pupil_x, pupil_y, aaa, eee, woo, smile,
+                                    rotate_pitch, rotate_yaw, rotate_roll)
 
-            new_rotate = get_rotation_matrix(s_info['pitch'] + es.r[0], s_info['yaw'] + es.r[1],
-                                             s_info['roll'] + es.r[2])
-            x_d_new = (s_info['scale'] * (1 + es.s)) * ((s_exp + es.e) @ new_rotate) + s_info['t']
+                new_rotate = get_rotation_matrix(s_info['pitch'] + es.r[0], s_info['yaw'] + es.r[1],
+                                                 s_info['roll'] + es.r[2])
+                x_d_new = (s_info['scale'] * (1 + es.s)) * ((s_exp + es.e) @ new_rotate) + s_info['t']
 
-            x_d_new = self.pipeline.stitching(psi.x_s_user, x_d_new)
+                x_d_new = self.pipeline.stitching(psi.x_s_user, x_d_new)
 
-            crop_out = self.pipeline.warp_decode(psi.f_s_user, psi.x_s_user, x_d_new)
-            crop_out = self.pipeline.parse_output(crop_out['out'])[0]
+                crop_out = self.pipeline.warp_decode(psi.f_s_user, psi.x_s_user, x_d_new)
+                crop_out = self.pipeline.parse_output(crop_out['out'])[0]
 
-            crop_with_fullsize = cv2.warpAffine(crop_out, psi.crop_trans_m, get_rgb_size(psi.src_rgb), cv2.INTER_LINEAR)
-            out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(np.uint8)
+                crop_with_fullsize = cv2.warpAffine(crop_out, psi.crop_trans_m, get_rgb_size(psi.src_rgb), cv2.INTER_LINEAR)
+                out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(np.uint8)
 
-            temp_out_img_path, out_img_path = get_auto_incremental_file_path(TEMP_DIR, "png"), get_auto_incremental_file_path(OUTPUTS_DIR, "png")
-            save_image(numpy_array=crop_out, output_path=temp_out_img_path)
-            save_image(numpy_array=out, output_path=out_img_path)
+                temp_out_img_path, out_img_path = get_auto_incremental_file_path(TEMP_DIR, "png"), get_auto_incremental_file_path(OUTPUTS_DIR, "png")
+                save_image(numpy_array=crop_out, output_path=temp_out_img_path)
+                save_image(numpy_array=out, output_path=out_img_path)
 
-            return out
+                return out
         except Exception as e:
             raise
 
