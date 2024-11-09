@@ -31,6 +31,7 @@ en: # English
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 ko: # Korean
   Language: 언어
@@ -65,6 +66,7 @@ ko: # Korean
   Output Video: 결과 영상
   First frame mouth alignment factor: 첫 프레임 입 반영 비율
   First frame eyes alignment factor: 첫 프레임 눈 반영 비율
+  Face Crop Factor: 얼굴 크롭 비율
 
 ja: # Japanese
   Language: 言語
@@ -99,6 +101,7 @@ ja: # Japanese
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 es: # Spanish
   Language: Idioma
@@ -133,6 +136,7 @@ es: # Spanish
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 fr: # French
   Language: Langue
@@ -167,6 +171,7 @@ fr: # French
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 de: # German
   Language: Sprache
@@ -201,6 +206,7 @@ de: # German
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 zh: # Chinese
   Language: 语言
@@ -235,6 +241,7 @@ zh: # Chinese
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 uk: # Ukrainian
   Language: Мова
@@ -269,6 +276,7 @@ uk: # Ukrainian
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 ru: # Russian
   Language: Язык
@@ -303,6 +311,7 @@ ru: # Russian
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
 
 tr: # Turkish
   Language: Dil
@@ -337,3 +346,4 @@ tr: # Turkish
   Output Video: Output Video
   First frame mouth alignment factor: First frame mouth alignment factor
   First frame eyes alignment factor: First frame eyes alignment factor
+  Face Crop Factor: Face Crop Factor
