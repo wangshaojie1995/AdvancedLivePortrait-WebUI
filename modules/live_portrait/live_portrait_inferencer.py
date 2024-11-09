@@ -160,7 +160,7 @@ class LivePortraitInferencer:
                         src_ratio: float = 1,
                         sample_ratio: float = 1,
                         sample_parts: str = SamplePart.ALL.value,
-                        crop_factor: float = 1.5,
+                        crop_factor: float = 2.3,
                         src_image: Optional[str] = None,
                         sample_image: Optional[str] = None,
                         motion_link: Optional[str] = None,
@@ -253,9 +253,9 @@ class LivePortraitInferencer:
 
     def create_video(self,
                      model_type: str = ModelType.HUMAN.value,
-                     retargeting_eyes: float = 0,
-                     retargeting_mouth: float = 0,
-                     crop_factor: float = 1.5,
+                     retargeting_eyes: float = 1,
+                     retargeting_mouth: float = 1,
+                     crop_factor: float = 2.3,
                      src_image: Optional[str] = None,
                      driving_vid_path: Optional[str] = None,
                      progress: gr.Progress = gr.Progress()
