@@ -4,6 +4,8 @@ import os
 import torch
 import functools
 import numpy as np
+import cv2
+from skimage.metrics import structural_similarity as compare_ssim
 
 from modules.utils.paths import *
 
@@ -40,6 +42,32 @@ def are_images_different(image1_path: str, image2_path: str):
         return False
     else:
         return True
+
+
+def are_videos_different(video1_path: str, video2_path: str):
+    cap1 = cv2.VideoCapture(video1_path)
+    cap2 = cv2.VideoCapture(video2_path)
+
+    while True:
+        ret1, frame1 = cap1.read()
+        ret2, frame2 = cap2.read()
+
+        if not ret1 or not ret2:
+            if ret1 != ret2:
+                return True
+            break
+
+        if frame1.shape != frame2.shape:
+            frame1 = cv2.resize(frame1, (frame2.shape[1], frame2.shape[0]))
+
+        score, _ = compare_ssim(frame1, frame2, full=True, multichannel=True)
+
+        if score < 0.99:
+            return True
+
+    cap1.release()
+    cap2.release()
+    return False
 
 
 @functools.lru_cache
