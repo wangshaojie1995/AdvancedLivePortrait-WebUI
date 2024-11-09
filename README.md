@@ -13,6 +13,8 @@ You can try it in Colab
 # Installation And Running
 ### Prerequisite
 1. `3.9` <= `python` <= `3.12` : https://www.python.org/downloads/release/python-3110/
+2. (Optional, only needed if you are using Video Driven) `FFmpeg`:  https://ffmpeg.org/download.html
+<br> After installing `FFmpeg`, make sure to add the FFmpeg/bin directory to your **system PATH**!
 
 ## Run Locally
 1. git clone this repository
