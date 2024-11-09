@@ -13,9 +13,9 @@ from modules.utils.paths import *
 
 TEST_IMAGE_URL = "https://github.com/microsoft/onnxjs-demo/raw/master/src/assets/EmotionSampleImages/sad_baby.jpg"
 TEST_VIDEO_URL = "https://github.com/jhj0517/sample-medias/raw/master/vids/human-face/expression01_short.mp4"
-TEST_IMAGE_PATH = os.path.join(PROJECT_ROOT_DIR, "tests", "test.png")
-TEST_VIDEO_PATH = os.path.join(PROJECT_ROOT_DIR, "tests", "test_expression.mp4")
-TEST_EXPRESSION_OUTPUT_PATH = os.path.join(PROJECT_ROOT_DIR, "tests", "edited_expression.png")
+TEST_IMAGE_PATH = os.path.normpath(os.path.join(PROJECT_ROOT_DIR, "tests", "test.png"))
+TEST_VIDEO_PATH = os.path.normpath(os.path.join(PROJECT_ROOT_DIR, "tests", "test_expression.mp4"))
+TEST_EXPRESSION_OUTPUT_PATH = os.path.normpath(os.path.join(PROJECT_ROOT_DIR, "tests", "edited_expression.png"))
 TEST_EXPRESSION_AAA = 100
 
 
@@ -69,6 +69,28 @@ def are_videos_different(video1_path: str, video2_path: str):
     cap1.release()
     cap2.release()
     return False
+
+
+def validate_video(video_path):
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Could not open video file.")
+        return False
+
+    frame_count = 0
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frame_count += 1
+
+    cap.release()
+
+    if frame_count == 0:
+        print("No frames found in video file.")
+        return False
+
+    return True
 
 
 def has_sound(video_path: str):
