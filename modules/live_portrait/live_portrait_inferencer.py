@@ -278,49 +278,50 @@ class LivePortraitInferencer:
         d_0_es = None
 
         psi = None
-        for i in range(total_length):
+        with torch.autocast(device_type=self.device, enabled=(self.device == "cuda")):
+            for i in range(total_length):
 
-            if i == 0:
-                psi = self.psi_list[i]
-                s_info = psi.x_s_info
-                s_es = ExpressionSet(erst=(s_info['kp'] + s_info['exp'], torch.Tensor([0, 0, 0]), s_info['scale'], s_info['t']))
+                if i == 0:
+                    psi = self.psi_list[i]
+                    s_info = psi.x_s_info
+                    s_es = ExpressionSet(erst=(s_info['kp'] + s_info['exp'], torch.Tensor([0, 0, 0]), s_info['scale'], s_info['t']))
 
-            new_es = ExpressionSet(es=s_es)
+                new_es = ExpressionSet(es=s_es)
 
-            if i < driving_length:
-                d_i_info = self.driving_values[i]
-                d_i_r = torch.Tensor([d_i_info['pitch'], d_i_info['yaw'], d_i_info['roll']]) # .float().to(device="cuda:0")
+                if i < driving_length:
+                    d_i_info = self.driving_values[i]
+                    d_i_r = torch.Tensor([d_i_info['pitch'], d_i_info['yaw'], d_i_info['roll']]) # .float().to(device="cuda:0")
 
-                if d_0_es is None:
-                    d_0_es = ExpressionSet(erst = (d_i_info['exp'], d_i_r, d_i_info['scale'], d_i_info['t']))
+                    if d_0_es is None:
+                        d_0_es = ExpressionSet(erst = (d_i_info['exp'], d_i_r, d_i_info['scale'], d_i_info['t']))
 
-                    self.retargeting(s_es.e, d_0_es.e, retargeting_eyes, (11, 13, 15, 16))
-                    self.retargeting(s_es.e, d_0_es.e, retargeting_mouth, (14, 17, 19, 20))
+                        self.retargeting(s_es.e, d_0_es.e, retargeting_eyes, (11, 13, 15, 16))
+                        self.retargeting(s_es.e, d_0_es.e, retargeting_mouth, (14, 17, 19, 20))
 
-                new_es.e += d_i_info['exp'] - d_0_es.e
-                new_es.r += d_i_r - d_0_es.r
-                new_es.t += d_i_info['t'] - d_0_es.t
+                    new_es.e += d_i_info['exp'] - d_0_es.e
+                    new_es.r += d_i_r - d_0_es.r
+                    new_es.t += d_i_info['t'] - d_0_es.t
 
-            r_new = get_rotation_matrix(
-                s_info['pitch'] + new_es.r[0], s_info['yaw'] + new_es.r[1], s_info['roll'] + new_es.r[2])
-            d_new = new_es.s * (new_es.e @ r_new) + new_es.t
-            d_new = self.pipeline.stitching(psi.x_s_user, d_new)
-            crop_out = self.pipeline.warp_decode(psi.f_s_user, psi.x_s_user, d_new)
-            crop_out = self.pipeline.parse_output(crop_out['out'])[0]
+                r_new = get_rotation_matrix(
+                    s_info['pitch'] + new_es.r[0], s_info['yaw'] + new_es.r[1], s_info['roll'] + new_es.r[2])
+                d_new = new_es.s * (new_es.e @ r_new) + new_es.t
+                d_new = self.pipeline.stitching(psi.x_s_user, d_new)
+                crop_out = self.pipeline.warp_decode(psi.f_s_user, psi.x_s_user, d_new)
+                crop_out = self.pipeline.parse_output(crop_out['out'])[0]
 
-            crop_with_fullsize = cv2.warpAffine(crop_out, psi.crop_trans_m, get_rgb_size(psi.src_rgb),
-                                                cv2.INTER_LINEAR)
-            out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(
-                np.uint8)
+                crop_with_fullsize = cv2.warpAffine(crop_out, psi.crop_trans_m, get_rgb_size(psi.src_rgb),
+                                                    cv2.INTER_LINEAR)
+                out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(
+                    np.uint8)
 
-            out_frame_path = get_auto_incremental_file_path(os.path.join(self.output_dir, "temp", "video_frames", "out"), "png")
-            save_image(out, out_frame_path)
+                out_frame_path = get_auto_incremental_file_path(os.path.join(self.output_dir, "temp", "video_frames", "out"), "png")
+                save_image(out, out_frame_path)
 
-            progress(i/total_length, desc=f"Generating frames {i}/{total_length} ..")
+                progress(i/total_length, desc=f"Generating frames {i}/{total_length} ..")
 
-        video_path = create_video_from_frames(TEMP_VIDEO_OUT_FRAMES_DIR, frame_rate=vid_info.frame_rate, output_dir=os.path.join(self.output_dir, "videos"))
+            video_path = create_video_from_frames(TEMP_VIDEO_OUT_FRAMES_DIR, frame_rate=vid_info.frame_rate, output_dir=os.path.join(self.output_dir, "videos"))
 
-        return video_path
+            return video_path
 
     def download_if_no_models(self,
                               model_type: str = ModelType.HUMAN.value,
