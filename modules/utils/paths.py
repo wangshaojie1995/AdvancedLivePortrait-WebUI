@@ -34,7 +34,7 @@ I18N_YAML_PATH = os.path.join(PROJECT_ROOT_DIR, "i18n", "translation.yaml")
 
 
 def get_auto_incremental_file_path(dir_path: str, extension: str, prefix: str = ""):
-    counter = 0
+    counter = len(os.listdir(dir_path))
     while True:
         if prefix:
             filename = f"{prefix}_{counter:05d}.{extension}"
