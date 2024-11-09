@@ -9,7 +9,9 @@ from modules.utils.paths import *
 
 
 TEST_IMAGE_URL = "https://github.com/microsoft/onnxjs-demo/raw/master/src/assets/EmotionSampleImages/sad_baby.jpg"
+TEST_VIDEO_URL = "https://github.com/jhj0517/sample-medias/raw/master/vids/human-face/expression01_short.mp4"
 TEST_IMAGE_PATH = os.path.join(PROJECT_ROOT_DIR, "tests", "test.png")
+TEST_VIDEO_PATH = os.path.join(PROJECT_ROOT_DIR, "tests", "test_expression.mp4")
 TEST_EXPRESSION_OUTPUT_PATH = os.path.join(PROJECT_ROOT_DIR, "tests", "edited_expression.png")
 TEST_EXPRESSION_AAA = 100
 
