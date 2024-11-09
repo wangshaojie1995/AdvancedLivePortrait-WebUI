@@ -29,6 +29,8 @@ en: # English
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 ko: # Korean
   Language: 언어
@@ -61,6 +63,8 @@ ko: # Korean
   Expression Video: 표정 영상
   GENERATE: 생성
   Output Video: 결과 영상
+  First frame mouth alignment factor: 첫 프레임 입 반영 비율
+  First frame eyes alignment factor: 첫 프레임 눈 반영 비율
 
 ja: # Japanese
   Language: 言語
@@ -93,6 +97,8 @@ ja: # Japanese
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 es: # Spanish
   Language: Idioma
@@ -125,6 +131,8 @@ es: # Spanish
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 fr: # French
   Language: Langue
@@ -157,6 +165,8 @@ fr: # French
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 de: # German
   Language: Sprache
@@ -189,6 +199,8 @@ de: # German
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 zh: # Chinese
   Language: 语言
@@ -221,6 +233,8 @@ zh: # Chinese
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 uk: # Ukrainian
   Language: Мова
@@ -253,6 +267,8 @@ uk: # Ukrainian
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 ru: # Russian
   Language: Язык
@@ -285,6 +301,8 @@ ru: # Russian
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
 
 tr: # Turkish
   Language: Dil
@@ -317,3 +335,5 @@ tr: # Turkish
   Expression Video: Expression Video
   GENERATE: GENERATE
   Output Video: Output Video
+  First frame mouth alignment factor: First frame mouth alignment factor
+  First frame eyes alignment factor: First frame eyes alignment factor
