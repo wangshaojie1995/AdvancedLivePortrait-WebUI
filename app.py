@@ -29,7 +29,7 @@ class App:
             gr.Slider(label=_("Rotate Roll"), minimum=-20, maximum=20, step=0.5, value=0),
             gr.Slider(label=_("Blink"), info=_("Value above 5 may appear distorted"), elem_id="blink_slider",
                       minimum=-20, maximum=20, step=0.5, value=0),
-            gr.Slider(label=_("Eyebrow"), minimum=-20, maximum=20, step=0.5, value=0),
+            gr.Slider(label=_("Eyebrow"), minimum=-40, maximum=20, step=0.5, value=0),
             gr.Slider(label=_("Wink"), minimum=0, maximum=25, step=0.5, value=0),
             gr.Slider(label=_("Pupil X"), minimum=-20, maximum=20, step=0.5, value=0),
             gr.Slider(label=_("Pupil Y"), minimum=-20, maximum=20, step=0.5, value=0),
