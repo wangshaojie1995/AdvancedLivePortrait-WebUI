@@ -1,6 +1,6 @@
 # AdvancedLivePortrait-WebUI
 
-Dedicated gradio based WebUI for [ComfyUI-AdvancedLivePortrait](https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait). 
+Dedicated gradio based WebUI started from [ComfyUI-AdvancedLivePortrait](https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait). 
 <br>You can edit the facial expression from the image.
 
 https://github.com/user-attachments/assets/cce42397-e898-4efb-9de8-735e050a10ce
