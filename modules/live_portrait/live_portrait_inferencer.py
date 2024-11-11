@@ -257,6 +257,7 @@ class LivePortraitInferencer:
                      crop_factor: float = 2.3,
                      src_image: Optional[str] = None,
                      driving_vid_path: Optional[str] = None,
+                     enable_image_restoration: bool = False,
                      progress: gr.Progress = gr.Progress()
                      ):
         if self.pipeline is None or model_type != self.model_type:
@@ -328,7 +329,10 @@ class LivePortraitInferencer:
                         np.uint8)
 
                     out_frame_path = get_auto_incremental_file_path(os.path.join(self.output_dir, "temp", "video_frames", "out"), "png")
-                    save_image(out, out_frame_path)
+                    out_frame_path = save_image(out, out_frame_path)
+
+                    if enable_image_restoration:
+                        out_frame_path = self.resrgan_inferencer.restore_image(out_frame_path)
 
                     progress(i/total_length, desc=f"Generating frames {i}/{total_length} ..")
 
