@@ -2,7 +2,7 @@ import functools
 import os
 
 
-PROJECT_ROOT_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..")
+PROJECT_ROOT_DIR = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", ".."))
 MODELS_DIR = os.path.join(PROJECT_ROOT_DIR, "models")
 MODELS_ANIMAL_DIR = os.path.join(MODELS_DIR, "animal")
 MODELS_REAL_ESRGAN_DIR = os.path.join(MODELS_DIR, "RealESRGAN")
