@@ -5,6 +5,7 @@ import os
 PROJECT_ROOT_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..")
 MODELS_DIR = os.path.join(PROJECT_ROOT_DIR, "models")
 MODELS_ANIMAL_DIR = os.path.join(MODELS_DIR, "animal")
+MODELS_REAL_ESRGAN_DIR = os.path.join(MODELS_DIR, "RealESRGAN")
 OUTPUTS_DIR = os.path.join(PROJECT_ROOT_DIR, "outputs")
 OUTPUTS_VIDEOS_DIR = os.path.join(OUTPUTS_DIR, "videos")
 TEMP_DIR = os.path.join(OUTPUTS_DIR, "temp")
@@ -52,6 +53,7 @@ def init_dirs():
     for dir_path in [
         MODELS_DIR,
         MODELS_ANIMAL_DIR,
+        MODELS_REAL_ESRGAN_DIR,
         OUTPUTS_DIR,
         EXP_OUTPUT_DIR,
         TEMP_DIR,
