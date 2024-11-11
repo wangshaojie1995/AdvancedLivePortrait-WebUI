@@ -47,8 +47,7 @@ class RealESRGANer():
         else:
             self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') if device is None else device
 
-        assert len(model_path) == len(dni_weight), 'model_path and dni_weight should have the save length.'
-        loadnet = self.dni(model_path[0], model_path[1], dni_weight)
+        loadnet = torch.load(model_path, map_location=torch.device('cpu'))
 
         # prefer to use params_ema
         if 'params_ema' in loadnet:

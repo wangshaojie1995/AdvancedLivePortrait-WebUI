@@ -1,17 +1,11 @@
 import logging
-import os
-import cv2
 import time
 import copy
 import dill
-import torch
 from ultralytics import YOLO
 import safetensors.torch
 import gradio as gr
-from gradio_i18n import Translate, gettext as _
 from ultralytics.utils import LOGGER as ultralytics_logger
-from enum import Enum
-from typing import Union, List, Dict, Tuple
 
 from modules.utils.paths import *
 from modules.utils.image_helper import *
@@ -27,7 +21,7 @@ from modules.live_portrait.warping_network import WarpingNetwork
 from modules.live_portrait.motion_extractor import MotionExtractor
 from modules.live_portrait.appearance_feature_extractor import AppearanceFeatureExtractor
 from modules.live_portrait.stitching_retargeting_network import StitchingRetargetingNetwork
-from modules.image_restoration.real_esrgan_inferencer import RealESRGANInferencer
+from modules.image_restoration.real_esrgan.real_esrgan_inferencer import RealESRGANInferencer
 
 
 class LivePortraitInferencer:
