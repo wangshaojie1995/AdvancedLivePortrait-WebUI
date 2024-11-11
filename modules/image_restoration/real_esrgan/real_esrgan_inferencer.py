@@ -6,9 +6,9 @@ from typing import Optional, Literal
 from modules.utils.paths import *
 from modules.utils.image_helper import save_image
 from .model_downloader import download_resrgan_model, MODELS_REALESRGAN_URL, MODELS_REALESRGAN_SCALABILITY
-from wrapper.rrdb_net import RRDBNet
-from wrapper.real_esrganer import RealESRGANer
-from wrapper.srvgg_net_compact import SRVGGNetCompact
+from .wrapper.rrdb_net import RRDBNet
+from .wrapper.real_esrganer import RealESRGANer
+from .wrapper.srvgg_net_compact import SRVGGNetCompact
 
 
 class RealESRGANInferencer:
@@ -70,8 +70,8 @@ class RealESRGANInferencer:
             model_path=model_path,
             model=arc,
             half=half_precision,
+            device=torch.device(self.get_device())
         )
-        self.model.device = torch.device(self.get_device())
 
     def restore_image(self,
                       img_path: str,
