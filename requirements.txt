@@ -17,8 +17,7 @@ gradio
 gradio-i18n
 
 # Image Restoration
-git+https://github.com/sberbank-ai/Real-ESRGAN.git
-
+git+https://github.com/jhj0517/Real-ESRGAN.git
 
 # Tests
 # pytest
