@@ -248,9 +248,9 @@ class LivePortraitInferencer:
                      retargeting_eyes: float = 1,
                      retargeting_mouth: float = 1,
                      crop_factor: float = 2.3,
+                     enable_image_restoration: bool = False,
                      src_image: Optional[str] = None,
                      driving_vid_path: Optional[str] = None,
-                     enable_image_restoration: bool = False,
                      progress: gr.Progress = gr.Progress()
                      ):
         if self.pipeline is None or model_type != self.model_type:
