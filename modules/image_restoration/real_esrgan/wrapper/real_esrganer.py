@@ -179,6 +179,9 @@ class RealESRGANer():
 
     @torch.no_grad()
     def enhance(self, img, outscale=None, alpha_upsampler='realesrgan'):
+        if isinstance(img, str):
+            img = cv2.imread(img)
+
         h_input, w_input = img.shape[0:2]
         # img: numpy
         img = img.astype(np.float32)
