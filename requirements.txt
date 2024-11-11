@@ -16,9 +16,6 @@ dill
 gradio
 gradio-i18n
 
-# Image Restoration
-git+https://github.com/jhj0517/Real-ESRGAN.git
-
 # Tests
 # pytest
 # scikit-image
