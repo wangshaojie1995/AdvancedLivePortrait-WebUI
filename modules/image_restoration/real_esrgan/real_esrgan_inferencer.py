@@ -6,9 +6,10 @@ from realesrgan.utils import RealESRGANer
 from realesrgan.archs.srvgg_arch import SRVGGNetCompact
 
 from modules.utils.paths import *
-from .model_downloader import download_resrgan_model, MODELS_REALESRGAN_URL, MODELS_REALESRGAN_SCALABILITY
 from modules.utils.image_helper import save_image
-from modules.image_restoration.real_esrgan.wrapper.rrdb_net import RRDBNet
+from .model_downloader import download_resrgan_model, MODELS_REALESRGAN_URL, MODELS_REALESRGAN_SCALABILITY
+from wrapper.rrdb_net import RRDBNet
+from wrapper.real_esrganer import RealESRGANer
 
 
 class RealESRGANInferencer:
