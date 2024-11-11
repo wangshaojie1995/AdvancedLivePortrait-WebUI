@@ -1,16 +1,14 @@
 import os.path
 import gradio as gr
 import torch
-from PIL import Image
-import numpy as np
-from typing import Optional, Literal, List, Dict, Tuple, Union
+from typing import Optional, Literal
 from realesrgan.utils import RealESRGANer
 from realesrgan.archs.srvgg_arch import SRVGGNetCompact
 
 from modules.utils.paths import *
 from .model_downloader import download_resrgan_model, MODELS_REALESRGAN_URL, MODELS_REALESRGAN_SCALABILITY
 from modules.utils.image_helper import save_image
-from .rrdb_net import RRDBNet
+from modules.image_restoration.real_esrgan.wrapper.rrdb_net import RRDBNet
 
 
 class RealESRGANInferencer:
