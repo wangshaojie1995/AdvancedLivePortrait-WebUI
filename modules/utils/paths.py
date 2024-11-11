@@ -30,6 +30,9 @@ MODEL_ANIMAL_PATHS = {
     # Just animal detection model not the face, needs better model
     "yolo_v5s_animal_det": os.path.join(MODELS_ANIMAL_DIR, "yolo_v5s_animal_det.n2x")
 }
+MODEL_REAL_ESRGAN_PATH = {
+    "realesr-general-x4v3": os.path.join(MODELS_REAL_ESRGAN_DIR, "realesr-general-x4v3.pth")
+}
 MASK_TEMPLATES = os.path.join(PROJECT_ROOT_DIR, "modules", "utils", "resources", "mask_template.png")
 I18N_YAML_PATH = os.path.join(PROJECT_ROOT_DIR, "i18n", "translation.yaml")
 
