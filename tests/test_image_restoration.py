@@ -14,7 +14,7 @@ from modules.live_portrait.live_portrait_inferencer import LivePortraitInference
 def test_image_restoration(
     input_image: str,
 ):
-    if not os.path.exists(input_image):
+    if not os.path.exists(TEST_IMAGE_PATH):
         download_image(
             TEST_IMAGE_URL,
             TEST_IMAGE_PATH
