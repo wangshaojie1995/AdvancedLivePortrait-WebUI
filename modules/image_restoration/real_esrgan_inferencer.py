@@ -19,13 +19,14 @@ class RealESRGANInferencer:
         self.device = self.get_device()
         self.model = None
         self.available_models = list(MODELS_REALESRGAN_URL.keys())
+        self.default_model = self.available_models[0]
 
     def load_model(self,
                    model_name: Optional[str] = None,
                    scale: int = 1,
                    progress: gr.Progress = gr.Progress()):
         if model_name is None:
-            model_name = "realesr-general-x4v3"
+            model_name = self.default_model
         if not model_name.endswith(".pth"):
             model_name += ".pth"
         model_path = os.path.join(self.model_dir, model_name)
@@ -53,6 +54,7 @@ class RealESRGANInferencer:
             else:
                 output_path = get_auto_incremental_file_path(self.output_dir, extension="png")
             sr_img.save(output_path)
+            return output_path
         except Exception as e:
             raise
 
