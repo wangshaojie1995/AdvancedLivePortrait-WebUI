@@ -27,6 +27,7 @@ from modules.live_portrait.warping_network import WarpingNetwork
 from modules.live_portrait.motion_extractor import MotionExtractor
 from modules.live_portrait.appearance_feature_extractor import AppearanceFeatureExtractor
 from modules.live_portrait.stitching_retargeting_network import StitchingRetargetingNetwork
+from modules.image_restoration.real_esrgan_inferencer import RealESRGANInferencer
 
 
 class LivePortraitInferencer:
@@ -68,6 +69,11 @@ class LivePortraitInferencer:
         self.psi = None
         self.psi_list = None
         self.d_info = None
+
+        self.resrgan_inferencer = RealESRGANInferencer(
+            model_dir=os.path.join(self.model_dir, "RealESRGAN"),
+            output_dir=self.output_dir
+        )
 
     def load_models(self,
                     model_type: str = ModelType.HUMAN.value,
@@ -161,6 +167,7 @@ class LivePortraitInferencer:
                         sample_ratio: float = 1,
                         sample_parts: str = SamplePart.ALL.value,
                         crop_factor: float = 2.3,
+                        enable_image_restoration: bool = False,
                         src_image: Optional[str] = None,
                         sample_image: Optional[str] = None,) -> None:
         if isinstance(model_type, ModelType):
@@ -232,8 +239,12 @@ class LivePortraitInferencer:
                 out = np.clip(psi.mask_ori * crop_with_fullsize + (1 - psi.mask_ori) * psi.src_rgb, 0, 255).astype(np.uint8)
 
                 temp_out_img_path, out_img_path = get_auto_incremental_file_path(TEMP_DIR, "png"), get_auto_incremental_file_path(OUTPUTS_DIR, "png")
-                save_image(numpy_array=crop_out, output_path=temp_out_img_path)
-                save_image(numpy_array=out, output_path=out_img_path)
+                cropped_out_img_path = save_image(numpy_array=crop_out, output_path=temp_out_img_path)
+                out_img_path = save_image(numpy_array=out, output_path=out_img_path)
+
+                if enable_image_restoration:
+                    cropped_out_img_path = self.resrgan_inferencer.restore_image(cropped_out_img_path)
+                    out_img_path = self.resrgan_inferencer.restore_image(out_img_path)
 
                 return out
         except Exception as e:
