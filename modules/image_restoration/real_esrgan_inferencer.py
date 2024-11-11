@@ -4,10 +4,9 @@ import torch
 from PIL import Image
 import numpy as np
 from typing import Optional
-from RealESRGAN import RealESRGAN
 
 from modules.utils.paths import *
-from .model_downloader import *
+from .model_downloader import download_resrgan_model, MODELS_REALESRGAN_URL
 
 
 class RealESRGANInferencer:
@@ -18,12 +17,15 @@ class RealESRGANInferencer:
         self.output_dir = output_dir
         self.device = self.get_device()
         self.model = None
+        self.up_sampler = None
+        self.face_enhancer = None
+
         self.available_models = list(MODELS_REALESRGAN_URL.keys())
         self.default_model = self.available_models[0]
 
     def load_model(self,
                    model_name: Optional[str] = None,
-                   scale: int = 2,
+                   scale: int = 1,
                    progress: gr.Progress = gr.Progress()):
         if model_name is None:
             model_name = self.default_model
