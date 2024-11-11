@@ -78,13 +78,15 @@ class RealESRGANInferencer:
                       img_path: str,
                       model_name: Optional[str] = None,
                       scale: int = 1,
-                      half_precision: bool = True,
+                      half_precision: Optional[bool] = None,
                       overwrite: bool = True):
         model_config = {
             "model_name": self.model_config["model_name"],
             "scale": scale,
             "half_precision": half_precision
         }
+        half_precision = True if self.device == "cuda" else False
+
         if self.model is None or self.model_config != model_config:
             self.load_model(
                 model_name=self.default_model if model_name is None else model_name,
