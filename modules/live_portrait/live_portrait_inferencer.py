@@ -243,8 +243,7 @@ class LivePortraitInferencer:
                 out_img_path = save_image(numpy_array=out, output_path=out_img_path)
 
                 if enable_image_restoration:
-                    cropped_out_img_path = self.resrgan_inferencer.restore_image(cropped_out_img_path)
-                    out_img_path = self.resrgan_inferencer.restore_image(out_img_path)
+                    out = self.resrgan_inferencer.restore_image(out_img_path)
 
                 return out
         except Exception as e:
@@ -336,7 +335,11 @@ class LivePortraitInferencer:
 
                     progress(i/total_length, desc=f"Generating frames {i}/{total_length} ..")
 
-                video_path = create_video_from_frames(TEMP_VIDEO_OUT_FRAMES_DIR, frame_rate=vid_info.frame_rate, output_dir=os.path.join(self.output_dir, "videos"))
+                video_path = create_video_from_frames(
+                    TEMP_VIDEO_OUT_FRAMES_DIR,
+                    frame_rate=vid_info.frame_rate,
+                    output_dir=os.path.join(self.output_dir, "videos")
+                )
 
                 return video_path
         except Exception as e:
