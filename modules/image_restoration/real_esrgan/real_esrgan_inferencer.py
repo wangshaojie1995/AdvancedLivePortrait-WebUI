@@ -1,6 +1,7 @@
 import os.path
 import gradio as gr
 import torch
+import cv2
 from typing import Optional, Literal
 
 from modules.utils.paths import *
@@ -93,6 +94,8 @@ class RealESRGANInferencer:
 
         try:
             output, img_mode = self.model.enhance(img_path, outscale=scale)
+            if img_mode == "RGB":
+                output = cv2.cvtColor(output, cv2.COLOR_RGB2BGR)
 
             if overwrite:
                 output_path = img_path
