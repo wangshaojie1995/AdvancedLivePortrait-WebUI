@@ -93,7 +93,8 @@ class RealESRGANInferencer:
             )
 
         try:
-            output, img_mode = self.model.enhance(img_path, outscale=scale)
+            with torch.autocast(device_type=self.device, enabled=(self.device == "cuda")):
+                output, img_mode = self.model.enhance(img_path, outscale=scale)
             if img_mode == "RGB":
                 output = cv2.cvtColor(output, cv2.COLOR_RGB2BGR)
 
