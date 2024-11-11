@@ -23,7 +23,7 @@ class RealESRGANInferencer:
 
     def load_model(self,
                    model_name: Optional[str] = None,
-                   scale: int = 1,
+                   scale: int = 2,
                    progress: gr.Progress = gr.Progress()):
         if model_name is None:
             model_name = self.default_model
