@@ -3,7 +3,8 @@
 Dedicated gradio based WebUI started from [ComfyUI-AdvancedLivePortrait](https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait). 
 <br>You can edit the facial expression from the image.
 
-https://github.com/user-attachments/assets/cce42397-e898-4efb-9de8-735e050a10ce
+https://github.com/user-attachments/assets/9946a969-599b-4fca-8d83-7915cb7c4a00
+
 
 ## Notebook
 You can try it in Colab 
