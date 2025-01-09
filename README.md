@@ -8,7 +8,9 @@ https://github.com/user-attachments/assets/9946a969-599b-4fca-8d83-7915cb7c4a00
 
 ## Notebook
 You can try it in Colab 
-- [![colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jhj0517/AdvancedLivePortrait-WebUI/blob/master/notebooks/advanced_live_portrait_webui.ipynb)
+
+[![colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jhj0517/AdvancedLivePortrait-WebUI/blob/master/notebooks/advanced_live_portrait_webui.ipynb)
+[![Hugging Face Spaces](https://img.shields.io/badge/🤗-Open%20In%20Spaces-blue.svg)](https://huggingface.co/spaces/jhj0517/AdvancedLivePortrait-WebUI)
 
 
 # Installation And Running
